@@ -8,7 +8,7 @@ url = "https://int.seeclickfix.com/api/v2/issues/"
 querystring = {"request_types":"11386","per_page":"5","details":"true"}
 
 headers = {
-    'Authorization': "Basic c2VlY2xpY2tmaXhAdG93bm9mY2hhcGVsaGlsbC5vcmc6ZGV2dGVzdCEhIQ==",
+    'Authorization': secrets,
     'Cache-Control': "no-cache",
 }
 
