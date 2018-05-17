@@ -7,30 +7,14 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 			
-			/*var settings = {
-			"async": true,
-			"crossDomain": true,
-			"url": "https://int.seeclickfix.com/api/v2/issues/?request_types=11386&per_page=5&details=true",
-			"method": "GET",
-			"headers": {
-				"Authorization": "Basic c2VlY2xpY2tmaXhAdG93bm9mY2hhcGVsaGlsbC5vcmc6ZGV2dGVzdCEhIQ==",
-				"Cache-Control": "no-cache",
-				}
-			}
-
-			$.ajax(settings).done(function (response) {
-				console.log(response);
-			});
-			*/
-			
 			var date = new Date().toISOString().slice(0,10);
 			$(".title").append("Date: " + moment(date).format('MMMM Do, Y'));
 			
-			$.getJSON("seeclickfix.json",
+			$.getJSON("https://townofchapelhill.github.io/scf-reconciliation/seeclickfix.json",
             function processData(jsonData) {
 				$.each(jsonData.issues, function (object, objectData) {
 					//console.log(objectData);
-					$("table").append("<tr><td>" + objectData.id + "</td><td></td><td></td></tr>");
+					$("table").append("<tr><td>" + objectData.id + "</td><td>" + objectData.questions[2].answer + "</td><td>" + objectData.questions[0].answer + "</td></tr>");
 				});
 			});
 			
