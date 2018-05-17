@@ -5,7 +5,7 @@ with open("secrets.txt") as f:
 
 url = "https://int.seeclickfix.com/api/v2/issues/"
 
-querystring = {"request_types":"11386","per_page":"5","details":"true"}
+querystring = {"request_types":"11386","details":"true"}
 
 headers = {
     'Authorization': secrets,
