@@ -13,12 +13,17 @@
 			$.getJSON("https://townofchapelhill.github.io/scf-reconciliation/seeclickfix.json",
             function processData(jsonData) {
                 var totalRequests = 0;
+                var sumTotal = 0;
+                
 				$.each(jsonData.issues, function (object, objectData) {
 					//console.log(objectData);
 					$("table").append("<tr><td>" + objectData.id + "</td><td>" + objectData.questions[2].answer + "</td><td>" + objectData.questions[0].answer + "</td></tr>");
 				totalRequests++;
+                sumTotal += parseInt(objectData.questions[2].answer);
+                
                 if(totalRequests === jsonData.issues.length) {
                     $(".number").append("The Total Number of Requests is " + totalRequests);
+                    $(".amount").append("The Amount Paid Sum is " + sumTotal + " dollars");
                     }
                 });
 			});
@@ -37,5 +42,7 @@
 	</table>
      <p class = "number">
     </p>
+     <p class = "amount">
+     </p>
 </body>
 </html>
