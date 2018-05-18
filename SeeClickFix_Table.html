@@ -10,20 +10,68 @@
 			
 			var date = new Date().toISOString().slice(0,10);
 			$(".title").append("Date: " + moment(date).format('MMMM Do, Y'));
-			
-			$.getJSON("https://townofchapelhill.github.io/scf-reconciliation/seeclickfix_test.json",
+			$.getJSON("https://townofchapelhill.github.io/scf-reconciliation/seeclickfix.json",
             function processData(jsonData) {
+                var totalRequests = 0;
+                var sumTotal = 0;
+                
 				$.each(jsonData.issues, function (object, objectData) {
-					console.log(objectData);
+					//console.log(objectData);
 					$("table").append("<tr><td>" + objectData.id + "</td><td>" + objectData.questions[2].answer + "</td><td>" + objectData.questions[0].answer + "</td></tr>");
-				});
+				totalRequests++;
+                sumTotal += parseInt(objectData.questions[2].answer);
+                
+                if(totalRequests === jsonData.issues.length) {
+                    $(".number").append("The Total Number of Requests is " + totalRequests);
+                    $(".amount").append("The Amount Paid Sum is " + sumTotal + " dollars");
+                    }
+                    
+                });
 			});
 			
 		});
+        function downloadCSV(csv,filename) {
+            var csvSCF;
+            var downloadLink;
+            
+            csvSCF = new Blob([csv], {type: 'text/csv' });
+            
+            downloadLink = document.createElement("a");
+            
+            
+            downloadLink.download = filename;
+             //creating a link to the file
+             //pasing in the new CSV object
+             downloadLink.href = window.URL.createObjectURL(csvSCF);
+             downloadLink.style.display = 'none';
+             document.body.appendChild(downloadLink);
+             downloadLink.click();
+               
+    }
+        function exportTableToCSV(filename) {
+        
+        var csv = [];
+        var rows = document.querySelectorAll("table tr");
+        
+         for (var i = 0; i < rows.length; i++) {
+        //assigning each row of the csv fileto be the td elements from the table
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+        
+        for (var j = 0; j < cols.length; j++) 
+            row.push(cols[j].innerText);
+        
+        csv.push(row.join(","));        
+    }
+
+    // Download CSV file
+    downloadCSV(csv.join("\n"), filename);
+      
+    }
 	</script>
 </head>
 </body>
 	<h2 class = "title"></h2>
+    <div>
 	<table class = "table">
 		<tr>
 			<th>Request ID#</th>
@@ -31,5 +79,13 @@
 			<th># of Items</th>
 		</tr>
 	</table>
+    </div>
+     <p class = "number">
+    </p>
+     <p class = "amount">
+     </p>
+     <div>
+    <button onclick="exportTableToCSV('SCF.csv')">Export SCF Table to CSV File</button>
+    </div>
 </body>
 </html>
