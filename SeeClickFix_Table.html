@@ -17,7 +17,7 @@
                 
 				$.each(jsonData.issues, function (object, objectData) {
 					//console.log(objectData);
-					$("table").append("<tr><td>" + objectData.id + "</td><td>" + objectData.questions[2].answer + "</td><td>" + objectData.questions[0].answer + "</td><td>" + objectData.updated_at + "</td></tr>");
+					$("table").append("<tr><td>" + objectData.id + "</td><td>" + objectData.questions[2].answer + "</td><td>" + objectData.questions[0].answer + "</td></tr>");
 				totalRequests++;
                 sumTotal += parseInt(objectData.questions[2].answer);
                 
@@ -39,7 +39,6 @@
 			<th>Request ID#</th>
 			<th>Amount Paid</th>
 			<th># of Items</th>
-            <th>Last Updated At</th>
 		</tr>
 	</table>
      <p class = "number">
