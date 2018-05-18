@@ -4683,9 +4683,7 @@
         "vote_url": "https:\/\/int.seeclickfix.com\/api\/v2\/issues\/386779\/vote",
         "follow_url": "https:\/\/int.seeclickfix.com\/api\/v2\/issues\/386779\/follow"
       }
-    }
-  ],
-  [
+    },
     {
       "id": 386778,
       "status": "Open",
