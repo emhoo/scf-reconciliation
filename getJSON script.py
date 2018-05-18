@@ -17,7 +17,7 @@ response = requests.request("GET", url, headers=headers, params=querystring)
 
 pages = response.json()["metadata"]["pagination"]["pages"]
 
-with open("seeclickfix_test.json", "w+") as f:
+with open("seeclickfix.json", "w+") as f:
     data = {}
     data["issues"] = []
     page = response.json()["metadata"]["pagination"]["page"]
