@@ -17,9 +17,9 @@
                 
 				$.each(jsonData.issues, function (object, objectData) {
 					//console.log(objectData);
-					$("table").append("<tr><td>" + objectData.id + "</td><td>" + objectData.questions[2].answer + "</td><td>" + objectData.questions[0].answer + "</td></tr>");
+					$("table").append("<tr><td>" + objectData.id + "</td><td>" + getAnswer(objectData.questions, 2) + "</td><td>" + getAnswer(objectData.questions, 0) + "</td></tr>");
 				totalRequests++;
-                sumTotal += parseInt(objectData.questions[2].answer);
+                if(objectData.questions != null && !isNaN(objectData.questions[2].answer)) sumTotal += parseInt(objectData.questions[2].answer);
                 
                 if(totalRequests === jsonData.issues.length) {
                     $(".number").append("The Total Number of Requests is " + totalRequests);
@@ -30,6 +30,13 @@
 			});
 			
 		});
+		
+		//Returns the answer to a given question in a list of questions.
+		function getAnswer(questions, num){
+			if(questions == null) return "No Answer Given (null)";
+			return questions[num].answer
+		}
+		
         function downloadCSV(csv,filename) {
             var csvSCF;
             var downloadLink;
@@ -62,7 +69,6 @@
         
         csv.push(row.join(","));        
     }
-
     // Download CSV file
     downloadCSV(csv.join("\n"), filename);
       
