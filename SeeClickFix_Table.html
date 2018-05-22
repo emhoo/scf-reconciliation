@@ -23,8 +23,7 @@
 					if(parseInt(objectData.created_at.slice(0,4)) === current_date.getFullYear()
 					   && parseInt(objectData.created_at.slice(5,7)) === current_date.getMonth() +1
 					    && parseInt(objectData.created_at.slice(8,10)) >= current_date.getDate() -6) {
-						$("table").append("<tr><td>" + objectData.id + "</td><td>" + getAnswer(objectData.questions, 2) + "</td><td>" + getAnswer(objectData.questions, 0) + "</td><td>" +
-									  objectData.created_at + "</td></tr>");
+						$("table").append("<tr><td>" + objectData.id + "</td><td>" + getAnswer(objectData.questions, 2) + "</td><td>" + getAnswer(objectData.questions, 0) + "</td></tr>");
 				totalRequests++;
                 if(objectData.questions != null && !isNaN(objectData.questions[2].answer)) sumTotal += parseInt(objectData.questions[2].answer);
                 
