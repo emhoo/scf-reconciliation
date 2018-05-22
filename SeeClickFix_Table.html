@@ -15,14 +15,6 @@
                 var totalRequests = 0;
                 var sumTotal = 0;
 				
-				/*var byProperty = function(prop) {
-		return function(a,b) {
-			return(a.created_at-b.created_at);
-		};
-};
-
-jsonData.issues.sort(byProperty("created_at"));*/
-
                 var current_date = new Date();
 				
 				$.each(jsonData.issues, function (object, objectData) {
@@ -111,8 +103,5 @@ jsonData.issues.sort(byProperty("created_at"));*/
      <div>
     <button onclick="exportTableToCSV('SCF.csv')">Export SCF Table to CSV File</button>
     </div>
-	 <h3>
-		View Requests From
-	 </h3>
 </body>
 </html>
