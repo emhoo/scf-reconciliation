@@ -1,7 +1,6 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width" />
-	<title>SeeClickFix Table</title>
 	<script src="https://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="clickfix.css"></link>
@@ -9,7 +8,8 @@
 		$(document).ready(function () {
 			
 			$.get("https://townofchapelhill.github.io/scf-reconciliation/metadata.txt", function(data) {
-				$(".title").append("Last Updated: " + moment(data).format('MMMM Do, Y'));
+				//To be used when we find another place to put the date
+				//$(".title").append("Last Updated: " + moment(data).format('MMMM Do, Y'));
             });
 			
 			var config;
@@ -31,6 +31,8 @@
 					//console.log(objectData);
 					
 					if(firstLoop){
+						$(".pageTitle").append(objectData.request_type.title);
+						$(".title").append(objectData.request_type.title);
 						for (var i in config) for(var q in objectData.questions) if(config[i] === objectData.questions[q].question.trim()){ 
 							questions.set(config[i], q);
 							$(".header").append("<th>" + config[i] + "</th>");
@@ -101,6 +103,7 @@
       
     }
 	</script>
+<title class = "pageTitle"></title>
 </head>
 </body>
 	<h2 class = "title"></h2>
@@ -116,7 +119,7 @@
      <p class = "amount">
      </p>
      <div>
-    <button onclick="exportTableToCSV('SCF.csv')">Export SCF Table to CSV File</button>
+    <button onclick="exportTableToCSV('SCF.csv')"><img src="download_icon.svg" width="25"/> Export SCF Table to CSV File</button>
     </div>
 </body>
 </html>
