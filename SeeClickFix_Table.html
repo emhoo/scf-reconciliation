@@ -14,10 +14,25 @@
             function processData(jsonData) {
                 var totalRequests = 0;
                 var sumTotal = 0;
-                
+				
+				/*var byProperty = function(prop) {
+		return function(a,b) {
+			return(a.created_at-b.created_at);
+		};
+};
+
+jsonData.issues.sort(byProperty("created_at"));*/
+
+                var current_date = new Date();
+				
 				$.each(jsonData.issues, function (object, objectData) {
 					//console.log(objectData);
-					$("table").append("<tr><td>" + objectData.id + "</td><td>" + getAnswer(objectData.questions, 2) + "</td><td>" + getAnswer(objectData.questions, 0) + "</td></tr>");
+					
+					if(parseInt(objectData.created_at.slice(0,4)) === current_date.getFullYear()
+					   && parseInt(objectData.created_at.slice(5,7)) === current_date.getMonth() +1
+					    && parseInt(objectData.created_at.slice(8,10)) >= current_date.getDate() -6) {
+						$("table").append("<tr><td>" + objectData.id + "</td><td>" + getAnswer(objectData.questions, 2) + "</td><td>" + getAnswer(objectData.questions, 0) + "</td><td>" +
+									  objectData.created_at + "</td></tr>");
 				totalRequests++;
                 if(objectData.questions != null && !isNaN(objectData.questions[2].answer)) sumTotal += parseInt(objectData.questions[2].answer);
                 
@@ -25,7 +40,10 @@
                     $(".number").append("The Total Number of Requests is " + totalRequests);
                     $(".amount").append("The Amount Paid Sum is " + sumTotal + " dollars");
                     }
-                    
+					
+					}
+					
+				
                 });
 			});
 			
@@ -93,5 +111,8 @@
      <div>
     <button onclick="exportTableToCSV('SCF.csv')">Export SCF Table to CSV File</button>
     </div>
+	 <h3>
+		View Requests From
+	 </h3>
 </body>
 </html>
