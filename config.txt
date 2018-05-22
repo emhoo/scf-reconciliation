@@ -1,3 +1,2 @@
 Amount paid
 How many items are to be collected?
-test
