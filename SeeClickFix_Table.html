@@ -1,16 +1,22 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width" />
+	<title>SeeClickFix Table</title>
 	<script src="https://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="clickfix.css"></link>
 	<script type="text/javascript">
+		var _year;
+		var _month;
+		var _day;
+		var display_date;
+		var json_Data;
 		$(document).ready(function () {
+		
+				display_date = new Date(2018, 4, 15);
 			
-			$.get("https://townofchapelhill.github.io/scf-reconciliation/metadata.txt", function(data) {
-				//To be used when we find another place to put the date
-				//$(".title").append("Last Updated: " + moment(data).format('MMMM Do, Y'));
-            });
+			var date = new Date().toISOString().slice(0,10);
+			$(".title").append("Date: " + moment(date).format('MMMM Do, Y'));
 			
 			var config;
 			$.get("https://townofchapelhill.github.io/scf-reconciliation/config.txt", function(data) {
@@ -18,8 +24,10 @@
 				for(var s in config) config[s] = config[s].trim();
             });
 			
+			
 			$.getJSON("https://townofchapelhill.github.io/scf-reconciliation/seeclickfix.json",
             function processData(jsonData) {
+				json_Data = jsonData;
                 var totalRequests = 0;
                 var sumTotal = 0;
                 
@@ -29,7 +37,8 @@
 				$.each(jsonData.issues, function (object, objectData) {
 					
 					//console.log(objectData);
-					
+				
+						if(parseInt(objectData.created_at.slice(0,4)) === display_date.getFullYear() && parseInt(objectData.created_at.slice(5,7)) === display_date.getMonth() +1 && parseInt(objectData.created_at.slice(8,11)) === display_date.getDate() && parseInt(objectData.created_at.slice(11,13)) <= 17) {
 					if(firstLoop){
 						$(".pageTitle").append(objectData.request_type.title);
 						$(".title").append(objectData.request_type.title);
@@ -41,7 +50,7 @@
 						firstLoop = false;
 					}
 					
-					var output = "<tr><td>" + objectData.id + "</td>";;
+					var output = "<tr><td>" + objectData.id + "</td>";
 					for(var i of questions.values()) output += "<td>" + getAnswer(objectData.questions, i) + "</td>";
 					output += "</tr>";
 					$("table").append(output);
@@ -53,11 +62,15 @@
 						$(".number").append("The Total Number of Requests is " + totalRequests);
 						$(".amount").append("The Amount Paid Sum is " + sumTotal + " dollars");
                     }
+				}
                     
                 });
 			});
 			
 		});
+			
+		
+		
 		
 		//Returns the answer to a given question in a list of questions.
 		function getAnswer(questions, num){
@@ -102,8 +115,8 @@
     downloadCSV(csv.join("\n"), filename);
       
     }
+	
 	</script>
-<title class = "pageTitle"></title>
 </head>
 </body>
 	<h2 class = "title"></h2>
@@ -118,8 +131,18 @@
     </p>
      <p class = "amount">
      </p>
-     <div>
+    <div>
     <button onclick="exportTableToCSV('SCF.csv')"><img src="download_icon.svg" width="25"/> Export SCF Table to CSV File</button>
     </div>
+	 <p>
+		Please enter a date below to view requests from that day.
+	</p>
+		<input type = "number" placeholder = "YYYY">
+		</input>
+		<input type = "number" placeholder = "MM">
+		</input>
+		<input type = "number" placeholder = "DD">
+		</input>
+	
 </body>
 </html>
