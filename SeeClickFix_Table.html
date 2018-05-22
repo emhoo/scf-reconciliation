@@ -8,8 +8,9 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 			
-			var date = new Date().toISOString().slice(0,10);
-			$(".title").append("Date: " + moment(date).format('MMMM Do, Y'));
+			$.get("https://townofchapelhill.github.io/scf-reconciliation/metadata.txt", function(data) {
+				$(".title").append("Last Updated: " + moment(data).format('MMMM Do, Y'));
+            });
 			
 			var config;
 			$.get("https://townofchapelhill.github.io/scf-reconciliation/config.txt", function(data) {
