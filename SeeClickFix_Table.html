@@ -13,7 +13,7 @@
 		var json_Data;
 		$(document).ready( function() {
 		
-				display_date = new Date(2018, 4, 15);
+				display_date = new Date();
 			
 			var date = new Date().toISOString().slice(0,10);
 			
@@ -69,7 +69,7 @@
 				} else {
 					totalRequests++;
 					if(totalRequests === jsonData.issues.length && are_requests === false) {
-					$(".norequests").append("There are no requests in this time range.");
+					$(".norequests").append("There are no requests from today.");
 					}
 				}
                     
