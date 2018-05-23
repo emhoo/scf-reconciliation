@@ -33,12 +33,15 @@
                 
 				var firstLoop = true;
 				var questions = new Map();
+				var are_requests = false;
 				
 				$.each(jsonData.issues, function (object, objectData) {
 					
 					//console.log(objectData);
 				
-						if(parseInt(objectData.created_at.slice(0,4)) === display_date.getFullYear() && parseInt(objectData.created_at.slice(5,7)) === display_date.getMonth() +1 && parseInt(objectData.created_at.slice(8,11)) === display_date.getDate() && parseInt(objectData.created_at.slice(11,13)) <= 17) {
+						if(parseInt(objectData.created_at.slice(0,4)) === display_date.getFullYear() && parseInt(objectData.created_at.slice(5,7)) === display_date.getMonth() +1 && parseInt(objectData.created_at.slice(8,11)) === display_date.getDate() && parseInt(objectData.created_at.slice(11,13)) <= 17
+						   //second condition is checking if after 5 of the previous day
+						   || parseInt(objectData.created_at.slice(0,4)) === display_date.getFullYear() && parseInt(objectData.created_at.slice(5,7)) === display_date.getMonth() +1 && parseInt(objectData.created_at.slice(8,11)) === display_date.getDate() -1 && parseInt(objectData.created_at.slice(11,13)) > 17) {
 					if(firstLoop){
 						$(".pageTitle").append(objectData.request_type.title);
 						$(".title").append(objectData.request_type.title);
@@ -54,7 +57,7 @@
 					for(var i of questions.values()) output += "<td>" + getAnswer(objectData.questions, i) + "</td>";
 					output += "</tr>";
 					$("table").append(output);
-					
+					are_requests = true;
 					totalRequests++;
 					if(objectData.questions != null && !isNaN(getAnswer(objectData.questions, questions.get("Amount paid")))) sumTotal += parseInt(getAnswer(objectData.questions, questions.get("Amount paid")));
                 
@@ -62,6 +65,11 @@
 						$(".number").append("The Total Number of Requests is " + totalRequests);
 						$(".amount").append("The Amount Paid Sum is " + sumTotal + " dollars");
                     }
+				} else {
+					totalRequests++;
+					if(totalRequests === jsonData.issues.length && are_requests === false) {
+					$(".norequests").append("There are no requests in this time range.");
+					}
 				}
                     
                 });
@@ -127,12 +135,14 @@
 		</tr>
 	</table>
     </div>
+	<p class = "norequests">
+	</p>
      <p class = "number">
     </p>
      <p class = "amount">
      </p>
     <div>
-    <button onclick="exportTableToCSV('SCF.csv')"><img src="download_icon.svg" width="25"/> Export SCF Table to CSV File</button>
+    <button onclick="exportTableToCSV('SCF.csv')"><img src="download_icon.svg" width="25"/> Export</button>
     </div>
 	 <p>
 		Please enter a date below to view requests from that day.
