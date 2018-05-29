@@ -11,11 +11,17 @@
 		var _day;
 		var display_date;
 		var json_Data;
+		var previous_day;
 		$(document).ready( function() {
 		
-				display_date = new Date();
+			display_date = new Date();
+				
+			_year = parseInt(display_date.getFullYear());
+			 _month = parseInt(display_date.getMonth())-1;
+			 _day = parseInt(display_date.getDate()) -1;
+			 
+			 previous_day = new Date(_year, _month, _day);
 			
-			var date = new Date().toISOString().slice(0,10);
 			
 			var config;
 			$.get("https://townofchapelhill.github.io/scf-reconciliation/config.txt", function(data) {
@@ -36,8 +42,8 @@
 				
 				$.each(jsonData.issues, function (object, objectData) {
 				
-						if(parseInt(objectData.created_at.slice(0,4)) === display_date.getFullYear() && parseInt(objectData.created_at.slice(5,7)) === display_date.getMonth() +1 && parseInt(objectData.created_at.slice(8,11)) === display_date.getDate() && parseInt(objectData.created_at.slice(11,13)) < 17
-						  || parseInt(objectData.created_at.slice(0,4)) === display_date.getFullYear() && parseInt(objectData.created_at.slice(5,7)) === display_date.getMonth() +1 && parseInt(objectData.created_at.slice(8,11)) === display_date.getDate() -1 && parseInt(objectData.created_at.slice(11,13)) >= 17) {
+					if(objectData.created_at.slice(0,10) === display_date  && parseInt(objectData.created_at.slice(11,13)) < 17
+				   || objectData.created_at.slice(0,10) === previous_day && parseInt(objectData.created_at.slice(11,13)) >= 17 ) {
 					
 					if(firstLoop){
 						$(".pageTitle").append(objectData.request_type.title);
@@ -86,12 +92,13 @@
 			$(".table").append("<tr class ='header'><th>Request ID# </th></tr>");
 			$(".norequests").empty();
 			
-			 _year = parseInt(document.getElementById("year").value);
-			 console.log(_year);
-			 _month = parseInt(document.getElementById("month").value) -1;
-			 _day = parseInt(document.getElementById("day").value);
-			 
-			 display_date = new Date(_year, _month, _day);
+			display_date = document.getElementById("filter_date").value;
+			
+			 _year = parseInt(display_date.slice(0,4));
+			 _month = parseInt(display_date.slice(5,7))-1;
+			 _day = parseInt(display_date.slice(8,11)) -1;
+		
+			previous_day = new Date(_year, _month, _day);
 			 
 			 var config;
 			$.get("https://townofchapelhill.github.io/scf-reconciliation/config.txt", function(data) {
@@ -111,8 +118,8 @@
 				
 				$.each(jsonData.issues, function (object, objectData) {
 					
-						if(parseInt(objectData.created_at.slice(0,4)) === display_date.getFullYear() && parseInt(objectData.created_at.slice(5,7)) === display_date.getMonth() +1 && parseInt(objectData.created_at.slice(8,11)) === display_date.getDate() && parseInt(objectData.created_at.slice(11,13)) < 17
-						   || parseInt(objectData.created_at.slice(0,4)) === display_date.getFullYear() && parseInt(objectData.created_at.slice(5,7)) === display_date.getMonth() +1 && parseInt(objectData.created_at.slice(8,11)) === display_date.getDate() -1 && parseInt(objectData.created_at.slice(11,13)) >= 17) {
+					if(objectData.created_at.slice(0,10) === display_date  && parseInt(objectData.created_at.slice(11,13)) < 17
+				   || objectData.created_at.slice(0,10) === previous_day && parseInt(objectData.created_at.slice(11,13)) >= 17 ) {
 						
 					if(firstLoop){
 						for (var i in config) for(var q in objectData.questions) if(config[i] === objectData.questions[q].question.trim()){ 
@@ -218,12 +225,7 @@
 	 <p>
 		Please enter a date below to view requests from that day.
 	</p>
-		<input type = "text" placeholder = "YYYY" id = "year" >
-		</input>
-		<input type = "text" placeholder = "MM" id = "month">
-		</input>
-		<input type = "text" placeholder = "DD" id = "day">
-		</input>
+	<input type = "date" id ="filter_date"></input>
 	 <div>
 		<button onclick= "$(document).ready(setDisplayDate);">Filter Requests</button>
 	 </div>
