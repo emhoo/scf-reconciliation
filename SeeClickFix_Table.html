@@ -15,22 +15,28 @@
 		$(document).ready( function() {
 		
 			display_date = new Date();
+			console.log(display_date);
 				
 			_year = parseInt(display_date.getFullYear());
-			 _month = parseInt(display_date.getMonth())-1;
+			 _month = parseInt(display_date.getMonth()) + 1;
 			 _day = parseInt(display_date.getDate()) -1;
-			 
-			 previous_day = new Date(_year, _month, _day);
+
+			 if(display_date.getMonth().length == 2) {
+			 previous_day = _year+ "-" + _month + "-" + _day;
+			 } else {
+				previous_day = _year + "-0" + _month + "-" + _day;
+			 }
+			
 			
 			
 			var config;
-			$.get("https://townofchapelhill.github.io/scf-reconciliation/config.txt", function(data) {
+			$.get("https://townofchapelhill.github.io/scf-reconciliation/config_test.txt", function(data) {
 				config = data.split("\n");
 				for(var s in config) config[s] = config[s].trim();
             });
 			
 			
-			$.getJSON("https://townofchapelhill.github.io/scf-reconciliation/seeclickfix.json",
+			$.getJSON("https://townofchapelhill.github.io/scf-reconciliation/seeclickfix_test.json",
             function processData(jsonData) {
 				json_Data = jsonData;
                 var totalRequests = 0;
@@ -42,8 +48,11 @@
 				
 				$.each(jsonData.issues, function (object, objectData) {
 				
-					if(objectData.created_at.slice(0,10) === display_date  && parseInt(objectData.created_at.slice(11,13)) < 17
+					if(parseInt(objectData.created_at.slice(0,4)) === _year
+					   && parseInt(objectData.created_at.slice(5,7)) === _month
+					   && parseInt(objectData.created_at.slice(8,10)) === _day + 1 && parseInt(objectData.created_at.slice(11,13)) < 17
 				   || objectData.created_at.slice(0,10) === previous_day && parseInt(objectData.created_at.slice(11,13)) >= 17 ) {
+					
 					
 					if(firstLoop){
 						$(".pageTitle").append(objectData.request_type.title);
@@ -73,6 +82,7 @@
 					
 					
 				} else {
+					console.log("Test");
 					totalRequests++;
 					if(totalRequests === jsonData.issues.length && are_requests === false) {
 					$(".norequests").append("There are no requests from today.");
@@ -93,12 +103,17 @@
 			$(".norequests").empty();
 			
 			display_date = document.getElementById("filter_date").value;
-			
+
 			 _year = parseInt(display_date.slice(0,4));
-			 _month = parseInt(display_date.slice(5,7))-1;
+			 _month = parseInt(display_date.slice(5,7));
 			 _day = parseInt(display_date.slice(8,11)) -1;
-		
-			previous_day = new Date(_year, _month, _day);
+			if(_month.length == 2) {
+			 previous_day = _year+ "-" + _month + "-" + _day;
+			 } else {
+				previous_day = _year + "-0" + _month + "-" + _day;
+			 }
+			
+	
 			 
 			 var config;
 			$.get("https://townofchapelhill.github.io/scf-reconciliation/config.txt", function(data) {
