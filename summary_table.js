@@ -15,7 +15,10 @@
             });
        
        function getRequestType(jsonData) {
+        while(jsonData.issues[0].request_type.title !== null) {
         return jsonData.issues[0].request_type.title;
+        }
+        return "Type not listed";
        }
        
        function getRequestsTotal(jsonData) {
@@ -28,6 +31,9 @@
                  sumTotal += parseInt(objectData.questions[1].answer);
                 }
        });
+        if(sumTotal === undefined) {
+                    sumTotal = "Amount not updated";
+                }
        }
        
         });
