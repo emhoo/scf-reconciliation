@@ -6,90 +6,11 @@
 		var previous_day;
 		$(document).ready( function() {
 		
-			display_date = new Date();
-			console.log(display_date);
-				
-			_year = parseInt(display_date.getFullYear());
-			 _month = parseInt(display_date.getMonth()) + 1;
-			 _day = parseInt(display_date.getDate()) -1;
-
-			 if(display_date.getMonth().length == 2) {
-			 previous_day = _year+ "-" + _month + "-" + _day;
-			 } else {
-				previous_day = _year + "-0" + _month + "-" + _day;
-			 }
-			
-			
-			
-			var config;
-			$.get("https://townofchapelhill.github.io/scf-reconciliation/config_test.txt", function(data) {
-				config = data.split("\n");
-				for(var s in config) config[s] = config[s].trim();
-            });
-			
-			
-			$.getJSON("https://townofchapelhill.github.io/scf-reconciliation/seeclickfix_test.json",
-            function processData(jsonData) {
-				json_Data = jsonData;
-                var totalRequests = 0;
-                var sumTotal = 0;
-                
-				var firstLoop = true;
-				var questions = new Map();
-				var are_requests = false;
-				
-				$.each(jsonData.issues, function (object, objectData) {
-				
-					if(parseInt(objectData.created_at.slice(0,4)) === _year
-					   && parseInt(objectData.created_at.slice(5,7)) === _month
-					   && parseInt(objectData.created_at.slice(8,10)) === _day + 1 && parseInt(objectData.created_at.slice(11,13)) < 17
-				   || objectData.created_at.slice(0,10) === previous_day && parseInt(objectData.created_at.slice(11,13)) >= 17 ) {
-					
-					
-					if(firstLoop){
-						$(".pageTitle").append(objectData.request_type.title);
-						$(".title").append(objectData.request_type.title);
-						for (var i in config) for(var q in objectData.questions) if(config[i] === objectData.questions[q].question.trim()){ 
-							questions.set(config[i], q);
-							$(".header").append("<th>" + config[i] + "</th>");
-							break;
-						}
-						firstLoop = false;
-					}
-					
-					var output = "<tr><td>" + objectData.id + "</td>";
-					for(var i of questions.values()) output += "<td>" + getAnswer(objectData.questions, i) + "</td>";
-					output += "</tr>";
-					$("table").append(output);
-					//validating that there is a request for that day
-					are_requests = true;
-					
-					totalRequests++;
-					if(objectData.questions != null && !isNaN(getAnswer(objectData.questions, questions.get("Amount paid")))) sumTotal += parseInt(getAnswer(objectData.questions, questions.get("Amount paid")));
-                
-					if(totalRequests === jsonData.issues.length) {
-						$(".number").append("The Total Number of Requests is " + totalRequests);
-						$(".amount").append("The Amount Paid Sum is " + sumTotal + " dollars");
-                    }
-					
-					
-				} else {
-					console.log("Test");
-					totalRequests++;
-					if(totalRequests === jsonData.issues.length && are_requests === false) {
-					$(".norequests").append("There are no requests from today.");
-					}
-				}
-                    
-                });
-				
-				
-			});
+			setDisplayDate();
 					
 		});
 		
 		function setDisplayDate() {
-			console.log("Test");
 			$(".table").empty();
 			$(".table").append("<tr class ='header'><th>Request ID# </th></tr>");
 			$(".norequests").empty();
