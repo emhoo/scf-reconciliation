@@ -31,13 +31,13 @@
 	
 			 
 			 var config;
-			$.get("https://townofchapelhill.github.io/scf-reconciliation/config.txt", function(data) {
+			$.get("https://townofchapelhill.github.io/scf-reconciliation/config_bulky_items.txt", function(data) {
 				config = data.split("\n");
 				for(var s in config) config[s] = config[s].trim();
             });
 			 
 			 
-			 $.getJSON("https://townofchapelhill.github.io/scf-reconciliation/seeclickfix.json",
+			 $.getJSON("https://townofchapelhill.github.io/scf-reconciliation/seeclickfix_bulky_items.json",
             function processData(jsonData) {
 			   var totalRequests = 0;
                 var sumTotal = 0;
