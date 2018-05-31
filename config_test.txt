@@ -1,3 +1,0 @@
-Reporter Name
-Type of Cart
-What type of issue is being reported or requested?
