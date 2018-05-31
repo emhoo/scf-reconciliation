@@ -14,6 +14,8 @@
 			$(".table").empty();
 			$(".table").append("<tr class ='header'><th>Request ID# </th></tr>");
 			$(".norequests").empty();
+			$(".number").empty();
+			$(".amount").empty();
 			
 			display_date = document.getElementById("filter_date").value;
 
@@ -46,6 +48,9 @@
 				
 				$.each(jsonData.issues, function (object, objectData) {
 					
+					console.log(totalRequests);
+					console.log(jsonData.issues.length);
+					
 					if(objectData.created_at.slice(0,10) === display_date  && parseInt(objectData.created_at.slice(11,13)) < 17
 				   || objectData.created_at.slice(0,10) === previous_day && parseInt(objectData.created_at.slice(11,13)) >= 17 ) {
 						
@@ -64,21 +69,23 @@
 					$("table").append(output);
 					are_requests = true;
 					totalRequests++;
-					if(objectData.questions != null && !isNaN(getAnswer(objectData.questions, questions.get("Amount paid")))) sumTotal += parseInt(getAnswer(objectData.questions, questions.get("Amount paid")));
+					if(questions.has("Amount paid") && objectData.questions != null && !isNaN(getAnswer(objectData.questions, questions.get("Amount paid")))) sumTotal += parseInt(getAnswer(objectData.questions, questions.get("Amount paid")));
                 
-					if(totalRequests === jsonData.issues.length) {
-						$(".number").append("The Total Number of Requests is " + totalRequests);
-						$(".amount").append("The Amount Paid Sum is " + sumTotal + " dollars");
-                    }
-					
-				} else {
-					totalRequests++;
 					if(totalRequests === jsonData.issues.length && are_requests === false) {
 					$(".norequests").append("There are no requests in this time range.");
 					}
+					 
 				}
                     
                 });
+				
+				if(totalRequests === jsonData.issues.length && are_requests === false) {
+					$(".norequests").append("There are no requests in this time range.");
+				}else{
+					$(".number").append("The Total Number of Requests is " + totalRequests);
+					$(".amount").append("The Amount Paid Sum is " + sumTotal + " dollars");
+				}
+				
 			});
 		
 		}
