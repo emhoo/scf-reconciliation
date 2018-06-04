@@ -123,14 +123,14 @@
                 request_type = getRequestType(jsonData);
                 requests_total = getRequestsTotal(jsonData);
                if(jsonData.issues[0].request_type.id === 14437) {
-                 if(requests_total === "No requests from today."){
+                 if(requests_total === "No requests in this time range."){
                 sumTotal = "Amount not updated.";
                 } else {
                     sumTotal = requests_total * 30;
                 console.log("reached");
                     }
                 } else if(jsonData.issues[0].request_type.id === 14550) {
-                    if(requests_total === "No requests from today."){
+                    if(requests_total === "No requests in this time range."){
                 sumTotal = "Amount not updated.";
                 } else {
                     sumTotal = requests_total * 31;
