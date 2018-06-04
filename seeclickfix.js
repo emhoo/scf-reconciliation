@@ -37,7 +37,7 @@
             });
 			 
 			 
-			 $.getJSON("https://townofchapelhill.github.io/scf-reconciliation/seeclickfix_bulky_items.json",
+			 $.getJSON("https://townofchapelhill.github.io/scf-reconciliation/data/seeclickfix_11386.json",
             function processData(jsonData) {
 			   var totalRequests = 0;
                 var sumTotal = 0;
@@ -47,9 +47,6 @@
 				var are_requests = false;
 				
 				$.each(jsonData.issues, function (object, objectData) {
-					
-					console.log(totalRequests);
-					console.log(jsonData.issues.length);
 					
 					if(objectData.created_at.slice(0,10) === display_date  && parseInt(objectData.created_at.slice(11,13)) < 17
 				   || objectData.created_at.slice(0,10) === previous_day && parseInt(objectData.created_at.slice(11,13)) >= 17 ) {

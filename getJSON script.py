@@ -1,6 +1,7 @@
 import requests
 import json
 import datetime
+import time
      
 with open("secrets.txt") as f:
     secrets = f.read()
@@ -19,13 +20,13 @@ headers = {
 
 response = requests.request("GET", url, headers=headers, params=querystring)
 
-pages = response.json()["metadata"]["pagination"]["pages"]
-
 with open("metadata.txt", "w+") as f:
     f.truncate()
     f.write(datetime.datetime.now().strftime("%Y-%m-%d"))
 
 for c in config:
+    querystring = {"request_types":c,"details":"true"}
+    response = requests.request("GET", url, headers=headers, params=querystring)
     with open("data/seeclickfix_" + c + ".json", "w+") as f:
         data = {}
         data["issues"] = []
@@ -36,3 +37,4 @@ for c in config:
             data["issues"] += response.json()["issues"]
             page = response.json()["metadata"]["pagination"]["next_page"]
         f.write(json.dumps(data))
+    time.sleep(1)
