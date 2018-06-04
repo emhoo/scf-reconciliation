@@ -1,13 +1,17 @@
-	var _year;
+		var _year;
 		var _month;
 		var _day;
 		var display_date;
 		var json_Data;
 		var previous_day;
+        var today;
+        var run =0;
+        
 		$(document).ready( function() {
 		
 			setDisplayDate();
-					
+            today = true;
+		
 		});
 		
 		function setDisplayDate() {
@@ -16,7 +20,12 @@
 			$(".norequests").empty();
 			$(".number").empty();
 			$(".amount").empty();
+            
+            if (run > 0) {
+                today = false;
+            }
 			
+            if(today === false) {
 			display_date = document.getElementById("filter_date").value;
 
 			 _year = parseInt(display_date.slice(0,4));
@@ -27,9 +36,24 @@
 			 } else {
 				previous_day = _year + "-0" + _month + "-" + _day;
 			 }
+            } else {
+                display_date = new Date();
+                _year = display_date.getFullYear();
+                _month = display_date.getMonth() + 1;
+                _day = display_date.getDate() -1;
+            
+            if(_month.length == 2) {
+			 previous_day = _year+ "-" + _month + "-" + _day;
+             display_date = _year + "-" + _month + "-" + (_day+1);
+             console.log(display_date);
+			 } else {
+				previous_day = _year + "-0" + _month + "-" + _day ;
+                display_date = _year + "-0" + _month + "-" + (_day + 1);
+                console.log(display_date);
+			 }
+            }
 			
-	
-			 
+
 			 var config;
 			$.get("https://townofchapelhill.github.io/scf-reconciliation/config_bulky_items.txt", function(data) {
 				config = data.split("\n");
@@ -37,7 +61,7 @@
             });
 			 
 			 
-			 $.getJSON("https://townofchapelhill.github.io/scf-reconciliation/data/seeclickfix_11386.json",
+			 $.getJSON("https://townofchapelhill.github.io/scf-reconciliation/seeclickfix_bulky_items.json",
             function processData(jsonData) {
 			   var totalRequests = 0;
                 var sumTotal = 0;
@@ -67,24 +91,25 @@
 					are_requests = true;
 					totalRequests++;
 					if(questions.has("Amount paid") && objectData.questions != null && !isNaN(getAnswer(objectData.questions, questions.get("Amount paid")))) sumTotal += parseInt(getAnswer(objectData.questions, questions.get("Amount paid")));
-                
-					if(totalRequests === jsonData.issues.length && are_requests === false) {
-					$(".norequests").append("There are no requests in this time range.");
-					}
+
 					 
 				}
                     
                 });
 				
-				if(totalRequests === jsonData.issues.length && are_requests === false) {
+				if(are_requests === false) {
+                    if(today === false){
 					$(".norequests").append("There are no requests in this time range.");
+                    } else {
+                    $(".norequests").append("There are no requests from today.");
+                    }
 				}else{
 					$(".number").append("The Total Number of Requests is " + totalRequests);
 					$(".amount").append("The Amount Paid Sum is " + sumTotal + " dollars");
 				}
 				
 			});
-		
+            run++;
 		}
 			
 		//Returns the answer to a given question in a list of questions.
