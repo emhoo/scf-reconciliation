@@ -1,2 +1,4 @@
-https://townofchapelhill.github.io/scf-reconciliation/seeclickfix_roll_carts.json
-https://townofchapelhill.github.io/scf-reconciliation/seeclickfix_bulky_items.json
+https://townofchapelhill.github.io/scf-reconciliation/data/seeclickfix_14551.json
+https://townofchapelhill.github.io/scf-reconciliation/data/seeclickfix_14437.json
+https://townofchapelhill.github.io/scf-reconciliation/data/seeclickfix_14550.json
+https://townofchapelhill.github.io/scf-reconciliation/data/seeclickfix_11386.json
