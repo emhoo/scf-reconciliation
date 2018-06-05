@@ -6,6 +6,7 @@
 		var _day;
 		var display_date;
 		var previous_day;
+        var link;
         $(document).ready(function () {
             
             display_date = new Date();
@@ -36,22 +37,25 @@
                 } else {
                     sumTotal = requests_total * 30;
                     }
-                } else if(jsonData.issues[0].request_type.id === 14550) {
+                link = "'garbage_carts.html'";
+                } else if(jsonData.issues[0].request_type.id === 14551) {
                     if(requests_total === "No requests from today."){
                 sumTotal = "Amount not updated.";
                 } else {
                     sumTotal = requests_total * 31;
                     }
+                link = "'yard_waste_carts.html'";
                 } else {
                     getSumTotal(jsonData);
+                link = "'bulky_items.html'";
                 }
-            
-            
-                $(".table").append("<tr><td>"+ request_type + "</td><td>"+ requests_total + "</td><td>" +  sumTotal + "</td></tr>");
+                      
+                $(".table").append('<tr onClick="location.href='+link+'"><td>' + request_type + "</td><td>"+ requests_total + "</td><td>" +  sumTotal + "</td></tr>");
             });    
                 }
         
             });
+       
         
        function getRequestType(jsonData) {
         while(jsonData.issues[0].request_type.title !== null) {
