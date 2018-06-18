@@ -6,17 +6,18 @@ import time
 with open("secrets.txt") as f:
     secrets = f.read()
 
-with open("config_getJSON.txt") as f:
-    config = f.read().split(",")
-
-url = "https://int.seeclickfix.com/api/v2/issues/"
-
-querystring = {"request_types":config[0],"details":"true"}
-
+url = "https://crm.seeclickfix.com/api/v2/organizations/1102/issues"
 headers = {
     'Authorization': secrets,
     'Cache-Control': "no-cache",
 }
+
+response = requests.request("GET", url, headers=headers)
+config = response.json()["metadata"]["query"]["request_types"].split(",")
+
+url = "https://seeclickfix.com/api/v2/issues/"
+
+querystring = {"request_types":config[0],"details":"true"}
 
 response = requests.request("GET", url, headers=headers, params=querystring)
 
@@ -37,4 +38,3 @@ for c in config:
             data["issues"] += response.json()["issues"]
             page = response.json()["metadata"]["pagination"]["next_page"]
         f.write(json.dumps(data))
-    time.sleep(1)
