@@ -38,6 +38,11 @@ with open("seeclickfix_all.json") as f:
         item["request_type"] = item["request_type"]["title"]
 
 with open("seeclickfix_all.csv", "w+") as f:
+    #All fields that start with a '{' are removed from the dictionary
+    for item in list(data["issues"][0]):
+        if str(data["issues"][0][item])[0] == "{":
+            for issue in data["issues"]:
+                del issue[item]
     fieldnames = list(data["issues"][0].keys())
     csv_writer = csv.DictWriter(f, fieldnames = fieldnames, lineterminator = "\n")
     csv_writer.writeheader()
