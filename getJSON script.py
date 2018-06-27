@@ -28,6 +28,11 @@ with open("metadata.txt", "w+") as f:
 for c in config:
     querystring = {"request_types":c,"details":"true"}
     response = requests.request("GET", url, headers=headers, params=querystring)
+    with open("data/config_" + c + ".json", "w+") as f:
+        print(c)
+        if response.json()["issues"] != [] and response.json()["issues"][0]["questions"] != None:
+            for q in response.json()["issues"][0]["questions"]:
+                f.write(q["question"] + "\n")
     with open("data/seeclickfix_" + c + ".json", "w+") as f:
         data = {}
         data["issues"] = []
